@@ -6,7 +6,7 @@ provider "aws" {
 #key value pair
 resource "aws_key_pair" "my_key_pair" {
   key_name   = "terra-automated-key"
-  public_key = file("terra-automated-key.pub") #interpolating the public key file
+  public_key = file(terra-automate-key.pub) #interpolating the public key file
 }
 
 #creating Default VPC
