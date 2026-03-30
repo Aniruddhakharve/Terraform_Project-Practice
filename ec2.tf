@@ -73,3 +73,9 @@ resource "aws_instance" "my_instance" {
     Name = "my-terraform-automated-instance"
   }
 }
+
+#Resource for instance state
+resource "aws_instance_state" "my_instance_state" {
+  instance_id = aws_instance.my_instance[count.index].id #interpolating the instance id of the first instance
+  state = "stopped"
+}
