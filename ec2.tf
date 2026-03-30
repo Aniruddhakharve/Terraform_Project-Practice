@@ -30,7 +30,7 @@ resource "aws_security_group" "my_security_group" {
 #creating Ingress rule for Security Group which is inbound rule
 resource "aws_vpc_security_group_ingress_rule" "my_inbound_rule_http" {
   security_group_id = aws_security_group.my_security_group.id
-  cidr_ipv4         = aws_default_vpc.cidr_block
+  cidr_ipv4         = aws_default_vpc.default.cidr_block
   from_port         = 80
   ip_protocol       = "tcp"
   to_port           = 80
@@ -38,7 +38,7 @@ resource "aws_vpc_security_group_ingress_rule" "my_inbound_rule_http" {
 
 resource "aws_vpc_security_group_ingress_rule" "my_inbound_rule_ssh" {
   security_group_id = aws_security_group.my_security_group.id
-  cidr_ipv4         = aws_default_vpc.cidr_block
+  cidr_ipv4         = aws_default_vpc.default.cidr_block
   from_port         = 22
   ip_protocol       = "tcp"
   to_port           = 22
