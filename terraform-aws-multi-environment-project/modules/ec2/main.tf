@@ -48,7 +48,7 @@ resource "aws_vpc_security_group_egress_rule" "my_outbound_rule_all" {
 
 #creating EC2 instance
 resource "aws_instance" "my_instance" {
-# count = 3
+  count = var.ec2_instance_count
 
   ami           = var.ec2_ami_id
 
@@ -65,7 +65,7 @@ resource "aws_instance" "my_instance" {
   }
 
   tags = {
-    Name = var.ec2_instance_name
+    Name = "${var.env}-${var.ec2_instance_name}"
   }
 }
 
@@ -76,8 +76,8 @@ resource "aws_instance" "my_instance" {
 #   state = var.ec2_instance_state
 # }
 
-#Resource for instance state without using count and using single instance
-resource "aws_ec2_instance_state" "my_instance_state" {
-  instance_id = aws_instance.my_instance.id
-  state       = var.ec2_instance_state
-}
+# #Resource for instance state without using count and using single instance
+# resource "aws_ec2_instance_state" "my_instance_state" {
+#   instance_id = aws_instance.my_instance.id
+#   state       = var.ec2_instance_state
+# }
