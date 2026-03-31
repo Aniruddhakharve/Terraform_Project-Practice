@@ -37,5 +37,4 @@ variable "env" {
 variable "ec2_instance_count" {
   type        = number
   description = "This variable holds my EC2 instance count"
-  default     = 1
 }
