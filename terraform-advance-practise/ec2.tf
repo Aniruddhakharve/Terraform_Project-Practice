@@ -70,9 +70,15 @@ resource "aws_instance" "my_instance" {
   }
 }
 
-#Resource for instance state
+# #Resource for instance state
+# resource "aws_ec2_instance_state" "my_instance_state" {
+#   count = length(aws_instance.my_instance)  
+#   instance_id = aws_instance.my_instance[count.index].id #interpolating the instance id of the first instance
+#   state = "stopped"
+# }
+
+#Resource for instance state without using count and using single instance
 resource "aws_ec2_instance_state" "my_instance_state" {
-  count = length(aws_instance.my_instance)  
-  instance_id = aws_instance.my_instance[count.index].id #interpolating the instance id of the first instance
-  state = "stopped"
+  instance_id = aws_instance.my_instance.id
+  state       = "stopped"
 }
