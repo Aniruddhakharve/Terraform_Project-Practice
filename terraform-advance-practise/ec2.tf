@@ -49,7 +49,7 @@ resource "aws_vpc_security_group_egress_rule" "my_outbound_rule_all" {
 
 #creating EC2 instance
 resource "aws_instance" "my_instance" {
-  count = 3
+# count = 3
 
   ami           = "ami-05d2d839d4f73aafb"
 
