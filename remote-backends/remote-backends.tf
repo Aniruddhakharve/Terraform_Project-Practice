@@ -1,9 +1,9 @@
 #s3
 resource "aws_s3_bucket" "my_bucket_backendname" {
-    bucket = "my-terraform-backend-bucket"  
+    bucket = "my-terraform-backend-bucket-dhurandaar"  
 
     tags = {
-      Name = "my-terraform-backend-bucket"
+      Name = "my-terraform-backend-bucket-dhurandaar"
     }
 }
 
