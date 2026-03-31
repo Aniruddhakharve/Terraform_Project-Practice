@@ -61,12 +61,12 @@ resource "aws_instance" "my_instance" {
   
   #Root Block storage for your EC2 instance
   root_block_device {
-    volume_size = 10
+    volume_size = var.ec2_volume_size
     volume_type = "gp3"
   }
 
   tags = {
-    Name = "my-terraform-automated-instance"
+    Name = var.ec2_instance_name
   }
 }
 
@@ -74,11 +74,11 @@ resource "aws_instance" "my_instance" {
 # resource "aws_ec2_instance_state" "my_instance_state" {
 #   count = length(aws_instance.my_instance)  
 #   instance_id = aws_instance.my_instance[count.index].id #interpolating the instance id of the first instance
-#   state = "stopped"
+#   state = var.ec2_instance_state
 # }
 
 #Resource for instance state without using count and using single instance
 resource "aws_ec2_instance_state" "my_instance_state" {
   instance_id = aws_instance.my_instance.id
-  state       = "stopped"
+  state       = var.ec2_instance_state
 }
