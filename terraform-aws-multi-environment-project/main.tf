@@ -1,16 +1,16 @@
 locals  {
     env = {
-    dev = {
-        instance_count = 2
-    }
+        dev = {
+            instance_count = 2
+        }
 
-     stg = {
-        instance_count = 3
-    }
+        stg = {
+            instance_count = 3
+        }
 
-     prd = {
-        instance_count = 4
-    }
+        prd = {
+            instance_count = 4
+        }
 }
 
 current = lookup(local.env, terraform.workspace, local.env["dev"])
