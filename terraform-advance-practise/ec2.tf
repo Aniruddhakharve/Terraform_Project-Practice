@@ -1,7 +1,11 @@
+#private scope which doesnt change in runtime
+locals {
+  ec2_key_name = var.env== "dev" ? "terra-automated-key" : "terra-automated-key-prod"
+}
 
 #key value pair
 resource "aws_key_pair" "my_key_pair" {
-  key_name   = "terra-automated-key"
+  key_name   = local.ec2_key_name #interpolating the local variable for key name
   public_key = file("terra-automate-key.pub") #interpolating the public key file
 }
 

@@ -15,3 +15,10 @@ variable "ec2_instance_state" {
   description = "This variable holds EC2 instance state"
   default     = "stopped"
 }
+
+variable "env" {
+    type        = string
+    description = "This variable holds the environment value to determine the key pair name"
+    default     = "dev"
+  
+}
