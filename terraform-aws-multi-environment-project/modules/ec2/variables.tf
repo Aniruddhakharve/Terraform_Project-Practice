@@ -31,7 +31,6 @@ variable "ec2_instance_type" {
 variable "env" {
     type        = string
     description = "This variable holds the environment value to determine the key pair name"
-    default     = "dev"
   
 }
 
