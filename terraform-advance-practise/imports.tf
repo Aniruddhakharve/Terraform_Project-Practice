@@ -8,3 +8,9 @@ resource "aws_instance" "my_existing_instance" {
     instance_type = "t3.micro"
     key_name = "underware"
 }
+
+resource "aws_ec2_instance_state" "my_existing_instance_state" {
+    instance_id = aws_instance.my_existing_instance.id
+    state       = "running"
+  
+}
