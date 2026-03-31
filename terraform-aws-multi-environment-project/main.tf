@@ -12,7 +12,7 @@ locals  {
     }
 }
 
-module "dev-infra" {
+module "ec2" {
   source = "./modules/ec2"
   env = terraform.workspace
   
