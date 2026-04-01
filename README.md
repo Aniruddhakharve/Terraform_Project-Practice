@@ -1,244 +1,237 @@
-# 🚀 Terraform AWS Multi-Environment Infrastructure Project
+<!-- Banner -->
+<div align="center">
+```
+████████╗███████╗██████╗ ██████╗  █████╗ ███████╗ ██████╗ ██████╗ ███╗   ███╗
+╚══██╔══╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔═══██╗██╔══██╗████╗ ████║
+   ██║   █████╗  ██████╔╝██████╔╝███████║█████╗  ██║   ██║██████╔╝██╔████╔██║
+   ██║   ██╔══╝  ██╔══██╗██╔══██╗██╔══██║██╔══╝  ██║   ██║██╔══██╗██║╚██╔╝██║
+   ██║   ███████╗██║  ██║██║  ██║██║  ██║██║     ╚██████╔╝██║  ██║██║ ╚═╝ ██║
+   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝
+                              AWS  ×  MULTI-ENV
+```
 
-## 📌 Overview
+# Terraform AWS — Multi-Environment Infrastructure
 
-This project demonstrates a **real-world DevOps infrastructure setup** using **Terraform on AWS**, implementing:
+**A hands-on DevOps learning project demonstrating real-world Terraform patterns:**
+modular architecture · workspace-based environments · remote state backends · scalable IaC
 
-- Multi-environment infrastructure (Dev, Staging, Production)
-- Modular Terraform architecture
-- Remote backend with state locking
-- Infrastructure automation using reusable modules
+[![Terraform](https://img.shields.io/badge/Terraform-1.x-7B42BC?style=for-the-badge&logo=terraform)](https://www.terraform.io/)
+[![AWS](https://img.shields.io/badge/AWS-Cloud-FF9900?style=for-the-badge&logo=amazon-aws)](https://aws.amazon.com/)
+[![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](./LICENSE)
+[![Status](https://img.shields.io/badge/Status-Active-22C55E?style=for-the-badge)]()
+
+</div>
 
 ---
 
-## 🧠 Architecture Overview
+## 🗺️ What This Repository Is
+
+This isn't just a tutorial follow-along — it's a structured learning journey from **zero Terraform knowledge** to **production-grade multi-environment infrastructure** on AWS.
+
+Every folder in this repo represents a real concept I studied, broke, fixed, and understood.
+
+> **End goal:** Build the kind of infrastructure setup used by real engineering teams — modular, environment-aware, and state-managed.
+
+---
+
+## 📂 Repository Structure
+```
+.
+├── 🌟 terraform-aws-multi-environment-project/   ← MAIN PROJECT (start here)
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── provider.tf
+│   ├── terraform.tf
+│   └── modules/
+│       ├── ec2/
+│       ├── s3/
+│       └── dynamodb/
+│
+├── terraform-advance-practise/                   ← Import, locals, conditionals
+├── remote-backends/                              ← S3 + DynamoDB backend config
+├── ec2.tf                                        ← Root-level EC2 basics
+├── s3.tf                                         ← Root-level S3 basics
+└── terra-automate-key.pub                        ← SSH public key
+```
+
+---
+
+## ⭐ Main Project: Multi-Environment Infrastructure
+
+> `terraform-aws-multi-environment-project/`
+
+This is the **centrepiece of the repo** — a production-inspired setup that provisions different infrastructure tiers across Dev, Staging, and Production using a **single codebase**.
+
+### Architecture Overview
 
 ![Architecture](./assets/architecture.png)
 
-> 📌 This architecture represents a multi-environment setup where infrastructure is dynamically provisioned using Terraform modules and workspaces.
+Infrastructure scales dynamically based on the active Terraform workspace:
 
-### 🔥 Key Concepts Used:
-- Terraform Modules
-- Terraform Workspaces
-- Remote Backend (S3 + DynamoDB)
-- Environment-based Infrastructure Scaling
+| Environment | EC2 Instances | S3 Buckets | DynamoDB Tables |
+|:-----------:|:-------------:|:----------:|:---------------:|
+| `dev`       | 2             | 1          | 1               |
+| `stg`       | 3             | 1          | 1               |
+| `prd`       | 4             | 2          | 2               |
 
----
+### How Environment-Switching Works
 
-## 🏗️ Project Architecture Explanation
+A single `locals` block drives all environment-specific config:
+```hcl
+locals {
+  env = {
+    dev = { instance_count = 2 }
+    stg = { instance_count = 3 }
+    prd = { instance_count = 4 }
+  }
+  current = lookup(local.env, terraform.workspace, local.env["dev"])
+}
+```
 
-- **Dev Environment**
-  - Minimal infrastructure (2 EC2 instances, 1 S3 bucket, 1 DynamoDB table)
-  
-- **Staging Environment**
-  - Medium-scale infrastructure (3 EC2 instances, 1 S3 bucket, 1 DynamoDB table)
-
-- **Production Environment**
-  - High-scale infrastructure (4 EC2 instances, multiple S3 buckets & DynamoDB tables)
-
-👉 All environments are managed using:
-terraform workspace
-
----
-
-## 📂 Project Structure
-
-.
-├── terraform-aws-multi-environment-project/
-│   ├── main.tf
-│   ├── provider.tf
-│   ├── variables.tf
-│   ├── terraform.tf
-│   │
-│   ├── modules/
-│   │   ├── ec2/
-│   │   ├── s3/
-│   │   └── Dynamodb/
-│   │
-│   ├── terra-automate-key.pub
-│   └── terra-automate-key (⚠️ DO NOT COMMIT)
-│
-├── terraform-advance-practise/
-│   ├── ec2.tf
-│   ├── variables.tf
-│   ├── output.tf
-│   ├── imports.tf
-│   └── providers.tf
-│
-├── remote-backends/
-│   ├── remote-backends.tf
-│   ├── providers.tf
-│   └── terraform.tf
-│
-├── ec2.tf
-├── s3.tf
-└── terra-automate-key.pub
+One codebase. Three environments. Zero duplication. ✅
 
 ---
 
-## 📁 Folder Breakdown
+## 🧱 Module Breakdown
 
-### 🔹 terraform-aws-multi-environment-project/
+### `modules/ec2`
+- Provisions EC2 instances with workspace-controlled count
+- Configures security groups, key pairs, and root volumes
+- Outputs public IP and DNS for downstream use
 
-This is the **main production-style Terraform project**.
+### `modules/s3`
+- Creates environment-namespaced S3 buckets
+- Consistent naming convention across workspaces
 
-#### 📄 main.tf
-- Uses Terraform modules
-- Dynamically provisions infrastructure using terraform.workspace
-
-#### 📄 variables.tf
-- Contains reusable variables
-
-#### 📄 provider.tf
-- AWS provider configuration
-
-#### 📄 terraform.tf
-- Required providers configuration
+### `modules/dynamodb`
+- Provisions DynamoDB tables per environment
+- Also used for Terraform remote state locking
 
 ---
 
-### 📦 modules/
+## 🔧 Remote Backend — `remote-backends/`
 
-Reusable infrastructure components:
-
-#### 🔸 modules/ec2/
-- Provisions EC2 instances
-- Configurable instance count per environment
-- Security group, key pair, root volume
-- Outputs public IP and DNS
-
-#### 🔸 modules/s3/
-- Creates S3 buckets
-- Dynamic naming using environment
-
-#### 🔸 modules/Dynamodb/
-- Creates DynamoDB tables
-- Used for backend locking and scalable storage
-
----
-
-### 🔹 remote-backends/
-
-Implements Terraform remote backend:
-
-- S3 bucket → stores Terraform state
-- DynamoDB → manages state locking
-
+Terraform state is stored remotely, preventing conflicts in team environments:
+```hcl
 backend "s3" {
   bucket         = "my-terraform-backend-bucket-dhurandaar"
   dynamodb_table = "my-terraform-backend-table"
   key            = "terraform.tfstate"
   region         = "ap-south-1"
 }
+```
+
+| Component   | Role                                        |
+|-------------|---------------------------------------------|
+| S3 Bucket   | Stores `.tfstate` file                      |
+| DynamoDB    | State locking (prevents race conditions)    |
 
 ---
 
-### 🔹 terraform-advance-practise/
+## 🧪 Advanced Practice — `terraform-advance-practise/`
 
-Advanced Terraform concepts:
+Experiments that pushed beyond the basics:
 
-- Import existing AWS resources
-- Manage EC2 instance state
-- Use of locals and conditional logic
-
----
-
-### 🔹 Root Level Files
-
-#### ec2.tf
-- Basic EC2 provisioning for practice
-
-#### s3.tf
-- Simple S3 bucket creation
+- **`terraform import`** — Bringing existing AWS resources under Terraform management
+- **`aws_ec2_instance_state`** — Managing instance lifecycle declaratively
+- **Conditional logic** — Environment-aware resource decisions
+- **Local variables** — Reducing repetition across configs
 
 ---
 
-## ⚙️ How It Works
-
-### 1️⃣ Initialize Terraform
+## 🚀 Running the Project
+```bash
+# 1. Initialize Terraform
 terraform init
 
-### 2️⃣ Create Workspaces
+# 2. Create workspaces
 terraform workspace new dev
 terraform workspace new stg
 terraform workspace new prd
 
-### 3️⃣ Select Workspace
+# 3. Switch to target environment
 terraform workspace select dev
 
-### 4️⃣ Apply Infrastructure
+# 4. Preview changes
+terraform plan
+
+# 5. Apply infrastructure
 terraform apply
+```
 
 ---
 
-## 🔁 Environment-Based Scaling
+## 🧠 Concepts Covered
 
-locals {
-  env = {
-    dev = {
-      instance_count = 2
-      bucket_count   = 1
-      table_count    = 1
-    }
+<details>
+<summary><strong>Fundamentals</strong></summary>
 
-    stg = {
-      instance_count = 3
-      bucket_count   = 1
-      table_count    = 1
-    }
+- Resource creation: EC2, S3, DynamoDB
+- Provider configuration
+- `variables.tf` and `output.tf`
+- State file basics
 
-    prd = {
-      instance_count = 4
-      bucket_count   = 2
-      table_count    = 2
-    }
-  }
+</details>
 
-  current = lookup(local.env, terraform.workspace, local.env["dev"])
-}
+<details>
+<summary><strong>Intermediate</strong></summary>
 
-👉 Infrastructure automatically scales based on selected workspace
+- `locals` and `lookup()` for dynamic config
+- `count` for scalable resource creation
+- Conditional expressions
+- Workspace-based deployments
+
+</details>
+
+<details>
+<summary><strong>Advanced</strong></summary>
+
+- Modular Terraform architecture
+- Remote backends (S3 + DynamoDB)
+- Importing existing infrastructure
+- Multi-environment design patterns
+
+</details>
 
 ---
 
 ## 🔐 Security Note
 
-⚠️ DO NOT commit private key to GitHub
+> ⚠️ Private keys must **never** be committed to version control.
 
-Add this to .gitignore:
+Add the following to your `.gitignore`:
+```
 *.pem
 terra-automate-key
+```
 
 ---
 
-## 🚀 Key Features
+## 🛣️ Roadmap
 
-- Multi-environment infrastructure (Dev, Staging, Prod)
-- Modular Terraform architecture
-- Remote backend with S3 + DynamoDB
-- Environment-based scaling
-- Reusable infrastructure components
-- Clean and organized project structure
-
----
-
-## 📈 Future Improvements
-
-- Add custom VPC module (instead of default VPC)
-- Implement IAM roles for EC2
-- Add CI/CD pipeline (GitHub Actions / Jenkins)
-- Deploy applications using user_data
-- Add monitoring using CloudWatch
+- [ ] Custom VPC module (replace default VPC)
+- [ ] IAM roles attached to EC2 instances
+- [ ] CI/CD pipeline with GitHub Actions
+- [ ] Application deployment via `user_data`
+- [ ] CloudWatch monitoring & alerting
+- [ ] Cost estimation with Infracost
 
 ---
 
-## 🧑‍💻 Author
+## 👤 Author
 
-Aniruddha Kharve  
-Aspiring Cloud & DevOps Engineer 🚀
+**Aniruddha Kharve**
+Aspiring Cloud & DevOps Engineer
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin)](https://linkedin.com/in/YOUR_HANDLE)
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat-square&logo=github)](https://github.com/YOUR_HANDLE)
 
 ---
 
-## ⭐ Support
+<div align="center">
 
-If you like this project, give it a ⭐ on GitHub and feel free to fork!
+**If this project helped you, drop a ⭐ — it means a lot.**
+
+*Built with curiosity, broken with confidence, fixed with Google.* 🔧
+
+</div>
