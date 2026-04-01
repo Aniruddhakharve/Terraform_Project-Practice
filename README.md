@@ -1,22 +1,21 @@
 <!-- Banner -->
+
 <div align="center">
-```
-████████╗███████╗██████╗ ██████╗  █████╗ ███████╗ ██████╗ ██████╗ ███╗   ███╗
-╚══██╔══╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔═══██╗██╔══██╗████╗ ████║
-   ██║   █████╗  ██████╔╝██████╔╝███████║█████╗  ██║   ██║██████╔╝██╔████╔██║
-   ██║   ██╔══╝  ██╔══██╗██╔══██╗██╔══██║██╔══╝  ██║   ██║██╔══██╗██║╚██╔╝██║
-   ██║   ███████╗██║  ██║██║  ██║██║  ██║██║     ╚██████╔╝██║  ██║██║ ╚═╝ ██║
-   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝
-                              AWS  ×  MULTI-ENV
-```
 
-# Terraform AWS — Multi-Environment Infrastructure
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=28&pause=1000&color=7B42BC&center=true&vCenter=true&width=600&lines=Terraform+AWS+Infrastructure;Multi-Environment+IaC;Dev+%7C+Staging+%7C+Production" alt="Typing SVG" />
 
-**A hands-on DevOps learning project demonstrating real-world Terraform patterns:**
-modular architecture · workspace-based environments · remote state backends · scalable IaC
+<br/>
 
-[![Terraform](https://img.shields.io/badge/Terraform-1.x-7B42BC?style=for-the-badge&logo=terraform)](https://www.terraform.io/)
-[![AWS](https://img.shields.io/badge/AWS-Cloud-FF9900?style=for-the-badge&logo=amazon-aws)](https://aws.amazon.com/)
+# 🏗️ Terraform AWS — Multi-Environment Infrastructure
+
+**A hands-on DevOps project demonstrating real-world Terraform patterns**
+
+`modular architecture` · `workspace-based environments` · `remote state backends` · `scalable IaC`
+
+<br/>
+
+[![Terraform](https://img.shields.io/badge/Terraform-1.x-7B42BC?style=for-the-badge&logo=terraform&logoColor=white)](https://www.terraform.io/)
+[![AWS](https://img.shields.io/badge/AWS-Cloud-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/)
 [![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](./LICENSE)
 [![Status](https://img.shields.io/badge/Status-Active-22C55E?style=for-the-badge)]()
 
