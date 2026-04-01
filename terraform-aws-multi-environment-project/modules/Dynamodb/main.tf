@@ -1,7 +1,7 @@
 #Dynamo DB
 resource "aws_dynamodb_table" "my_dynamodb_table" {
   count = var.dynamodb_table_count
-  name           = "${var.dynamo_db_table_name}-${count.index + 1}"
+  name           = "${var.env}-${var.dynamo_db_table_name}-${count.index + 1}"
   billing_mode   = "PAY_PER_REQUEST"
   hash_key       = "LockID"
   
