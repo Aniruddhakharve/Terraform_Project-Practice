@@ -2,21 +2,20 @@
 
 <div align="center">
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=28&pause=1000&color=7B42BC&center=true&vCenter=true&width=600&lines=Terraform+AWS+Infrastructure;Multi-Environment+IaC;Dev+%7C+Staging+%7C+Production" alt="Typing SVG" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=28&pause=1000&color=7B42BC&center=true&vCenter=true&width=700&lines=Terraform+AWS+Infrastructure;Multi-Environment+IaC;DevOps+Learning+Journey;Modules+%7C+Workspaces+%7C+Backends" alt="Typing SVG" />
 
 <br/>
 
 # 🏗️ Terraform AWS — Multi-Environment Infrastructure
 
-**A hands-on DevOps project demonstrating real-world Terraform patterns**
+**A hands-on DevOps learning project evolving from basics → real-world Terraform architecture**
 
-`modular architecture` · `workspace-based environments` · `remote state backends` · `scalable IaC`
+`modular architecture` · `workspaces` · `remote backends` · `scalable IaC`
 
 <br/>
 
 [![Terraform](https://img.shields.io/badge/Terraform-1.x-7B42BC?style=for-the-badge&logo=terraform&logoColor=white)](https://www.terraform.io/)
 [![AWS](https://img.shields.io/badge/AWS-Cloud-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/)
-[![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](./LICENSE)
 [![Status](https://img.shields.io/badge/Status-Active-22C55E?style=for-the-badge)]()
 
 </div>
@@ -25,18 +24,48 @@
 
 ## 🗺️ What This Repository Is
 
-This isn't just a tutorial follow-along — it's a structured learning journey from **zero Terraform knowledge** to **production-grade multi-environment infrastructure** on AWS.
+This repository represents my **complete Terraform learning journey** — starting from basic resource creation to building a **multi-environment, modular infrastructure setup** similar to real-world DevOps systems.
 
-Every folder in this repo represents a real concept I studied, broke, fixed, and understood.
+I didn’t just follow tutorials — I:
+- Built things from scratch  
+- Broke configurations  
+- Debugged real errors  
+- Understood how Terraform actually works internally  
 
-> **End goal:** Build the kind of infrastructure setup used by real engineering teams — modular, environment-aware, and state-managed.
+> 🎯 **Goal:** Design scalable, reusable, and environment-aware infrastructure using Terraform.
+
+---
+
+## 🧠 What I Practiced & Learned
+
+### 🔹 Terraform Fundamentals
+- EC2, S3, DynamoDB resource creation  
+- Provider configuration  
+- Variables (`variables.tf`)  
+- Outputs (`output.tf`)  
+
+### 🔹 Intermediate Concepts
+- Local variables (`locals`)  
+- `count` for scaling resources  
+- Conditional expressions  
+- Workspace-based deployments  
+
+### 🔹 Advanced Concepts
+- Terraform modules (reusable infra)  
+- Multi-environment architecture (Dev / Stg / Prd)  
+- Remote backend:
+  - S3 → state storage  
+  - DynamoDB → state locking  
+- Importing existing infrastructure (`terraform import`)  
+- Managing instance state (`aws_ec2_instance_state`)  
 
 ---
 
 ## 📂 Repository Structure
+
 ```
 .
-├── 🌟 terraform-aws-multi-environment-project/   ← MAIN PROJECT (start here)
+├── 🌟 terraform-aws-multi-environment-project/   ← MAIN PROJECT (START HERE)
 │   ├── main.tf
 │   ├── variables.tf
 │   ├── provider.tf
@@ -46,10 +75,10 @@ Every folder in this repo represents a real concept I studied, broke, fixed, and
 │       ├── s3/
 │       └── dynamodb/
 │
-├── terraform-advance-practise/                   ← Import, locals, conditionals
-├── remote-backends/                              ← S3 + DynamoDB backend config
-├── ec2.tf                                        ← Root-level EC2 basics
-├── s3.tf                                         ← Root-level S3 basics
+├── terraform-advance-practise/                   ← Advanced Terraform concepts
+├── remote-backends/                              ← Backend (S3 + DynamoDB)
+├── ec2.tf                                        ← Basic EC2 practice
+├── s3.tf                                         ← Basic S3 practice
 └── terra-automate-key.pub                        ← SSH public key
 ```
 
@@ -57,15 +86,22 @@ Every folder in this repo represents a real concept I studied, broke, fixed, and
 
 ## ⭐ Main Project: Multi-Environment Infrastructure
 
-> `terraform-aws-multi-environment-project/`
+📁 **Location:**  
+`terraform-aws-multi-environment-project/`
 
-This is the **centrepiece of the repo** — a production-inspired setup that provisions different infrastructure tiers across Dev, Staging, and Production using a **single codebase**.
+This is the **core project of this repository** where I implemented:
 
-### Architecture Overview
+- Modular Terraform architecture  
+- Workspace-based environment separation  
+- Dynamic infrastructure scaling  
+
+---
+
+## 🧠 Architecture Overview
 
 ![Architecture](./assets/architecture.png)
 
-Infrastructure scales dynamically based on the active Terraform workspace:
+### 📊 Environment Scaling
 
 | Environment | EC2 Instances | S3 Buckets | DynamoDB Tables |
 |:-----------:|:-------------:|:----------:|:---------------:|
@@ -73,9 +109,18 @@ Infrastructure scales dynamically based on the active Terraform workspace:
 | `stg`       | 3             | 1          | 1               |
 | `prd`       | 4             | 2          | 2               |
 
-### How Environment-Switching Works
+---
 
-A single `locals` block drives all environment-specific config:
+## ⚙️ How Environment Switching Works
+
+Terraform uses **workspaces**:
+
+```
+dev → stg → prd
+```
+
+Dynamic configuration using locals:
+
 ```hcl
 locals {
   env = {
@@ -83,34 +128,46 @@ locals {
     stg = { instance_count = 3 }
     prd = { instance_count = 4 }
   }
+
   current = lookup(local.env, terraform.workspace, local.env["dev"])
 }
 ```
 
-One codebase. Three environments. Zero duplication. ✅
+👉 One codebase → multiple environments → zero duplication 🚀
 
 ---
 
 ## 🧱 Module Breakdown
 
-### `modules/ec2`
-- Provisions EC2 instances with workspace-controlled count
-- Configures security groups, key pairs, and root volumes
-- Outputs public IP and DNS for downstream use
+### 🔸 modules/ec2
+- Creates EC2 instances  
+- Uses dynamic scaling (`count`)  
+- Configures:
+  - Security groups  
+  - Key pairs  
+  - Root volumes  
+- Outputs public IP & DNS  
 
-### `modules/s3`
-- Creates environment-namespaced S3 buckets
-- Consistent naming convention across workspaces
+---
 
-### `modules/dynamodb`
-- Provisions DynamoDB tables per environment
-- Also used for Terraform remote state locking
+### 🔸 modules/s3
+- Creates S3 buckets per environment  
+- Uses environment-based naming convention  
+
+---
+
+### 🔸 modules/dynamodb
+- Creates DynamoDB tables  
+- Used for:
+  - Backend state locking  
+  - Scalable infra design  
 
 ---
 
 ## 🔧 Remote Backend — `remote-backends/`
 
-Terraform state is stored remotely, preventing conflicts in team environments:
+Terraform state is stored remotely:
+
 ```hcl
 backend "s3" {
   bucket         = "my-terraform-backend-bucket-dhurandaar"
@@ -120,85 +177,56 @@ backend "s3" {
 }
 ```
 
-| Component   | Role                                        |
-|-------------|---------------------------------------------|
-| S3 Bucket   | Stores `.tfstate` file                      |
-| DynamoDB    | State locking (prevents race conditions)    |
+| Component | Purpose |
+|----------|--------|
+| S3       | Stores Terraform state |
+| DynamoDB | Prevents concurrent state conflicts |
 
 ---
 
 ## 🧪 Advanced Practice — `terraform-advance-practise/`
 
-Experiments that pushed beyond the basics:
+This folder contains deeper Terraform experiments:
 
-- **`terraform import`** — Bringing existing AWS resources under Terraform management
-- **`aws_ec2_instance_state`** — Managing instance lifecycle declaratively
-- **Conditional logic** — Environment-aware resource decisions
-- **Local variables** — Reducing repetition across configs
+- `terraform import` → Manage existing AWS resources  
+- `aws_ec2_instance_state` → Control instance lifecycle  
+- Local variables & conditionals  
+- Debugging real Terraform errors  
 
 ---
 
 ## 🚀 Running the Project
+
 ```bash
-# 1. Initialize Terraform
 terraform init
 
-# 2. Create workspaces
 terraform workspace new dev
 terraform workspace new stg
 terraform workspace new prd
 
-# 3. Switch to target environment
 terraform workspace select dev
 
-# 4. Preview changes
 terraform plan
-
-# 5. Apply infrastructure
 terraform apply
 ```
 
 ---
 
-## 🧠 Concepts Covered
+## 🧠 Key DevOps Takeaways
 
-<details>
-<summary><strong>Fundamentals</strong></summary>
-
-- Resource creation: EC2, S3, DynamoDB
-- Provider configuration
-- `variables.tf` and `output.tf`
-- State file basics
-
-</details>
-
-<details>
-<summary><strong>Intermediate</strong></summary>
-
-- `locals` and `lookup()` for dynamic config
-- `count` for scalable resource creation
-- Conditional expressions
-- Workspace-based deployments
-
-</details>
-
-<details>
-<summary><strong>Advanced</strong></summary>
-
-- Modular Terraform architecture
-- Remote backends (S3 + DynamoDB)
-- Importing existing infrastructure
-- Multi-environment design patterns
-
-</details>
+- Infrastructure should be **modular and reusable**  
+- State management is **critical in team environments**  
+- Multi-environment setups must be **scalable and dynamic**  
+- Terraform is **declarative, not imperative**  
 
 ---
 
 ## 🔐 Security Note
 
-> ⚠️ Private keys must **never** be committed to version control.
+⚠️ Never commit private keys to GitHub  
 
-Add the following to your `.gitignore`:
+Add to `.gitignore`:
+
 ```
 *.pem
 terra-automate-key
@@ -206,31 +234,27 @@ terra-automate-key
 
 ---
 
-## 🛣️ Roadmap
+## 📈 Future Improvements
 
-- [ ] Custom VPC module (replace default VPC)
-- [ ] IAM roles attached to EC2 instances
-- [ ] CI/CD pipeline with GitHub Actions
-- [ ] Application deployment via `user_data`
-- [ ] CloudWatch monitoring & alerting
-- [ ] Cost estimation with Infracost
+- Custom VPC module  
+- IAM roles for EC2  
+- CI/CD integration  
+- user_data automation  
+- CloudWatch monitoring  
 
 ---
 
 ## 👤 Author
 
-**Aniruddha Kharve**
-Aspiring Cloud & DevOps Engineer
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin)](https://linkedin.com/in/YOUR_HANDLE)
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat-square&logo=github)](https://github.com/YOUR_HANDLE)
+**Aniruddha Kharve**  
+Aspiring Cloud & DevOps Engineer 🚀  
 
 ---
 
 <div align="center">
 
-**If this project helped you, drop a ⭐ — it means a lot.**
+⭐ If this project helped you, consider giving it a star!
 
-*Built with curiosity, broken with confidence, fixed with Google.* 🔧
+**Built → Broken → Debugged → Learned → Improved 🔥**
 
 </div>
