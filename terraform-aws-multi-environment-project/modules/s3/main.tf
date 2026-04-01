@@ -1,7 +1,9 @@
 resource "aws_s3_bucket" "my_bucket" {
-bucket = var.s3_bucket_name
+  count = "${var.s3_bucket_name}-${count.index + 1}"
+  bucket = var.s3_bucket_name
 
   tags = {
-    Name   = var.s3_bucket_name
+    Name   = "${var.s3_bucket_name}-${count.index + 1}"
+    Environment = var.env
   }
 }

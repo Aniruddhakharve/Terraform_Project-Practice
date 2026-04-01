@@ -1,5 +1,6 @@
 #Dynamo DB
 resource "aws_dynamodb_table" "my_dynamodb_table" {
+  count = "${var.dynamodb_table_count}-${count.index + 1}"
   name           = var.dynamo_db_table_name
   billing_mode   = "PAY_PER_REQUEST"
   hash_key       = "LockID"
@@ -7,5 +8,9 @@ resource "aws_dynamodb_table" "my_dynamodb_table" {
   attribute {
     name = "LockID"
     type = "S"
+  }
+
+  tags = {
+    Environment = var.env
   }
 }

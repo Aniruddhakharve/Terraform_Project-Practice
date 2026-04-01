@@ -41,5 +41,5 @@ module "s3" {
 module "dynamo" {
   source = "./modules/Dynamodb"
   env = terraform.workspace
-  dynamodb_table_count =local.current.table_count
+  dynamodb_table_count = local.current.table_count
 }
